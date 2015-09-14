@@ -113,11 +113,11 @@ public class SuperTable{
       ResultScanner scanner = table.getScanner(scan);
 
       // Read values from scan result
-       for (Result result = scanner.next(); result != null; result = scanner.next())
-       
-      // Print scan result
-      System.out.println(result);
- 
+      for (Result result = scanner.next(); result != null; result = scanner.next()){
+      	// Print scan result
+      	System.out.println(result);
+      }
+      
       // Close the scanner
       scanner.close();
       
