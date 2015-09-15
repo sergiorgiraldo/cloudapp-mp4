@@ -30,14 +30,14 @@ After	that,	output	the	results	from	scanning the	personal.hero	column	of	the	tab
 */
 
 public class SuperTable{
-
+   @SuppressWarnings({ "resource", "deprecation" })
    public static void main(String[] args) throws IOException {
 
       // Instantiate Configuration class
-       Configuration con = HBaseConfiguration.create();
+       Configuration config = HBaseConfiguration.create();
 
       // Instaniate HBaseAdmin class
-      HBaseAdmin admin = new HBaseAdmin(con);
+      HBaseAdmin admin = new HBaseAdmin(config);
             
       // Instantiate table descriptor class
       HTableDescriptor tableDescriptor = new HTableDescriptor(TableName.valueOf("powers"));
@@ -102,7 +102,13 @@ public class SuperTable{
       hTable.put(p1);
       hTable.put(p2);
       hTable.put(p3);
-	
+
+      // Close table
+      hTable.close();
+		
+      // Instantiating HTable class
+      hTable = new HTable(config, "powers");
+		
       // Instantiate the Scan class
       Scan scan = new Scan();
       
@@ -110,7 +116,7 @@ public class SuperTable{
       scan.addColumn(Bytes.toBytes("personal"), Bytes.toBytes("hero"));
 
       // Get the scan result
-      ResultScanner scanner = table.getScanner(scan);
+      ResultScanner scanner = hTable.getScanner(scan);
 
       // Read values from scan result
       for (Result result = scanner.next(); result != null; result = scanner.next()){
